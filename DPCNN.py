@@ -3,6 +3,7 @@ import keras
 import numpy as np
 import gzip
 
+
 class DPCNN():
     def __init__(self,inputs,output_size,learning_rate,drop_out,hidden_layers,epochs,batchSz):
 
@@ -12,7 +13,7 @@ class DPCNN():
 
 
         # use of data
-        
+
 
 
 
@@ -42,6 +43,7 @@ class DPCNN():
         conv_1 = tf.nn.conv2d(image, filter_1, [1, 2, 2, 1], "SAME") + b1
         conv_1 = tf.nn.relu(conv_1)
         pool_1 = tf.nn.max_pool(conv_1, ksize=[1,2,2,1], strides = [1,2,2,1], padding='VALID')
+
 
         filter_2 = tf.Variable(tf.truncated_normal([2, 2, 16, 64], stddev=0.1))
         b2 = tf.Variable(tf.truncated_normal(shape=[64], stddev=0.1))
@@ -85,7 +87,7 @@ class DPCNN():
 
 def main():
     with open("oxbuild_images.tgz", 'rb') as f:
-        buf = gzip.GzipFile(fileobj=f).read(5050 * 28 * 28)
+        buf = gzip.GzipFile(fileobj=f).read(5051 * 28 * 28)
         train_inputs = np.frombuffer(buf, dtype='uint8', offset=16).reshape(5050, 28 * 28) #all images are resized with the longer side having 600 pixels.
         train_inputs = train_inputs / 255
 
