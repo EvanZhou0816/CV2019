@@ -2,6 +2,7 @@ import tensorflow as tf
 import keras
 import numpy as np
 import gzip
+import tarfile
 
 
 class DPCNN():
@@ -86,29 +87,31 @@ class DPCNN():
         pass
 
 def main():
-    with open("oxbuild_images.tgz", 'rb') as f:
-        buf = gzip.GzipFile(fileobj=f).read(5051 * 28 * 28)
-        train_inputs = np.frombuffer(buf, dtype='uint8', offset=16).reshape(5050, 28 * 28) #all images are resized with the longer side having 600 pixels.
-        train_inputs = train_inputs / 255
+    with open("oxbuild_images.tgz",'rb') as f:
+        print(np.array(f).shape)
+    # with open("oxbuild_images.tgz", 'rb') as f:
+    #     buf = gzip.GzipFile(fileobj=f).read(5051 * 28 * 28)
+    #     train_inputs = np.frombuffer(buf, dtype='uint8', offset=16).reshape(5050, 28 * 28) #all images are resized with the longer side having 600 pixels.
+    #     train_inputs = train_inputs / 255
 
-        batchSz = 40
-        img = tf.placeholder(tf.float32, [batchSz, 784])
-        # keep_prb = tf.placeholder(tf.float32)
+    #     batchSz = 40
+    #     img = tf.placeholder(tf.float32, [batchSz, 784])
+    #     # keep_prb = tf.placeholder(tf.float32)
 
-        dpcnn_model = DPCNN(inputs=train_inputs, learning_rate=0.01)
+    #     dpcnn_model = DPCNN(inputs=train_inputs, learning_rate=0.01)
 
-        sess = tf.Session()
-        sess.run(tf.global_variables_initializer())
-        opt = dpcnn_model.optimizer()
-        acc = dpcnn_model.accuracy_function()
-        for i in range(101):
-            imgs, anss = mnist.train.next_batch(batchSz)
-            sess.run(opt, feed_dict={img: imgs})
-        return
+    #     sess = tf.Session()
+    #     sess.run(tf.global_variables_initializer())
+    #     opt = dpcnn_model.optimizer()
+    #     acc = dpcnn_model.accuracy_function()
+    #     for i in range(101):
+    #         imgs, anss = mnist.train.next_batch(batchSz)
+    #         sess.run(opt, feed_dict={img: imgs})
+    #     return
 
-        sumAcc = 0
-        for i in range(1000):
-            imgs, anss = mnist.test.next_batch(batchSz)
-            sumAcc += sess.run(acc, feed_dict={img: imgs, ans: anss, keep_prb: 1})
-        print("Test Accuracy: %r" % (sumAcc / 1000))
-        return
+    #     sumAcc = 0
+    #     for i in range(1000):
+    #         imgs, anss = mnist.test.next_batch(batchSz)
+    #         sumAcc += sess.run(acc, feed_dict={img: imgs, ans: anss, keep_prb: 1})
+    #     print("Test Accuracy: %r" % (sumAcc / 1000))
+    #     return
