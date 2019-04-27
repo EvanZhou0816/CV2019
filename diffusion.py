@@ -38,5 +38,5 @@ def diffusion(a_m, t, k):
     rank = np.argsort(p_kk_inf, axis=1)
     return dis, rank[:, :k]
 
-a = np.array([[0,0,0,0,0],[3,4,6,3,7],[0,4,9,1,6], [5,2,7,4,8]])
-d, r = diffusion(a,3,2)
+# a = np.array([[0,0,0,0,0],[3,4,6,3,7],[0,4,9,1,6], [5,2,7,4,8]])
+# d, r = diffusion(a,3,2)
