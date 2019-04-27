@@ -44,4 +44,4 @@ def process_image(filename):
     res = arr/255
     return res
 
-process_image("all_souls_000000.jpg")
+# process_image("all_souls_000000.jpg")
