@@ -5,6 +5,7 @@ from sklearn import metrics
 def diffusion(a_m):
     res = metrics.pairwise.euclidean_distances(a_m)
     print(res)
+    return res
     # res = np.zeros((row,row))
     # for i in range(row):
     #     for j in range(row):

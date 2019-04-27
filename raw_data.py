@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 def process_image(filename):
     img = Image.open(filename)
+    # Image.frombytes()
     if img.width > 600 or img.height > 600:
         w_ratio = img.width/600
         h_ratio = img.height/600
@@ -20,4 +21,4 @@ def process_image(filename):
     res = arr/255
     return res
 
-process_image("all_souls_000000.jpg")
+# process_image("all_souls_000000.jpg")
