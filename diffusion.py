@@ -3,18 +3,16 @@ from scipy.spatial import distance
 from sklearn import metrics
 
 def diffusion(a_m):
-    res = metrics.pairwise.euclidean_distances(a_m)
-    print(res)
-    return res
-    # res = np.zeros((row,row))
-    # for i in range(row):
-    #     for j in range(row):
-    #         if i == j:
-    #             res[i][j] = 0
-    #         # res[i][j] = distance.euclidean(a_m[i],a_m[j])
-    #         res[i][j] = np.linalg.norm(a_m[i]-a_m[j])
-    #         res[j][i] = res[i][j]
-    # print(res)
+    dis = metrics.pairwise.euclidean_distances(a_m)
+    sum = np.sum(dis, axis=1)
+    sum = sum.reshape(sum.shape[0],1)
+    prob = dis/sum
+    prob = 1-prob
+    print(prob)
+
+
+
+    return
 
 
 a = np.array([[0,0],[3,4],[0,4]])
