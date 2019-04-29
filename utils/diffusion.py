@@ -15,28 +15,27 @@ def diffusion(a_m, t, k):
     dim = dis.shape[0]
 
     dis_order = np.argsort(dis, axis=1)
-    dis_k = np.where(dis_order<=k, dis, 0) #Ek in paper
+    dis_k = np.where(dis_order<=k, dis, 0) #Ek in paper, has zero
 
     sum = np.sum(dis_k, axis=1)
     sum = sum.reshape(sum.shape[0],1)
-    ori_p_k = dis_k/sum
+    ori_p_k = dis_k/sum #has zero
 
     p_kk = ori_p_k
     while t > 0:
         t -= 1
-        new_p_k = np.zeros(dis.shape)
-        for i in range(dim):
-            for j in range(dim):
-                if i == j:
-                    continue
-                for m in range(dim):
-                    for n in range(dim):
-                        new_p_k[i][j] += ori_p_k[i][m] * p_kk[m][n] * ori_p_k[n][j]
-        p_kk = new_p_k
+        new_p_k = np.matmul(np.matmul(ori_p_k, p_kk), ori_p_k.T)
+        new_order = np.argsort(new_p_k, axis=1)
+        p_kk = np.where(new_order<=k, new_p_k, 0)
 
     p_kk_inf = np.where(p_kk != 0, p_kk, float('inf'))
     rank = np.argsort(p_kk_inf, axis=1)
     return dis, rank[:, :k]
 
-# a = np.array([[0,0,0,0,0],[3,4,6,3,7],[0,4,9,1,6], [5,2,7,4,8]])
-# d, r = diffusion(a,3,2)
+a = np.array([[0,0,0,0,0],[3,4,6,3,7],[0,4,9,1,6], [5,2,7,4,8]])
+d, r = diffusion(a,3,2)
+print(d)
+print(r)
+
+# ranking = diffusion(np.load('../features_matrix.npy'), 1000, 300)
+# print(ranking)
