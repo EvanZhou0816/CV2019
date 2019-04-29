@@ -15,14 +15,18 @@ if __name__ == "__main__":
     os.chdir('F:/workspace_Python/CV2019')
     tar = tarfile.open("../oxbuild_images.tgz")
     ResNet_model = keras.applications.ResNet50(weights='imagenet', include_top=False,pooling='avg')
-
     # outputs1 = ResNet_model.get_layer('activation_48').output
     # outputs1 = Dense(4096, activation='softmax')(outputs1)
     # extracter = Model(inputs=ResNet_model.input,outputs=outputs1) 
+
+
     for layer in ResNet_model.layers:
         print(layer.name, layer.trainable)
-    sess=tf.Session()
-    i = 0
+    sess = tf.Session()
+
+
+    
+    # i = 0
     # features_matrix=[0 for i in range(2048)]
     # features_matrix = []
     # for tar_info in tar.getmembers():
@@ -41,7 +45,7 @@ if __name__ == "__main__":
     #         features_matrix = np.vstack((features_matrix, features))
     #     print("features matrix: ", np.shape(features_matrix))
     #     i+=1
-    print("image count: ", i)
-    np.save("features_matrix.npy", features_matrix)
+    # print("image count: ", i)
+    # np.save("features_matrix.npy", features_matrix)
         
     pass

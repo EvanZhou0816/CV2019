@@ -2,8 +2,11 @@ import numpy as np
 
 #image total 5062
 from PIL import Image
-def process_image(filename):
+def load_image(filename):
     img = Image.open(filename)
+    return img
+    pass
+def process_image(img):   
     # Image.frombytes()
     if img.width > 600 or img.height > 600:
         w_ratio = img.width/600
