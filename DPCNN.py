@@ -9,10 +9,12 @@ from tensorflow.python.keras.layers import Dense, Dropout, Flatten
 from tensorflow.python.keras.applications.resnet50 import preprocess_input 
 from scipy.spatial import distance
 from sklearn import metrics
+from utils import diffusion
+
 
 
 class DPCNN():
-    def __init__(self, inputs, output_size, learning_rate, drop_out, hidden_layers, epochs, batchSz, m0):
+    def __init__(self, inputs, output_size, learning_rate, drop_out, hidden_layers, epochs, batchSz, m0, t, k):
 
         # pre-trained Network(RestNet)
         self.pretrained = keras.applications.ResNet50(weights='imagenet', include_top=False, pooling='avg')
@@ -30,7 +32,7 @@ class DPCNN():
         self.batch_size = batchSz
         
         #training
-        self.loss = self.loss_function() 
+        self.loss = self.loss_function()
 
         # # computation graph construction
         self.triplelets   #
