@@ -14,7 +14,12 @@ from sklearn import metrics
 
 
 class DPCNN():
+<<<<<<< HEAD
     def __init__(self, input_tar, ranking_matrix, learning_rate = 0.01, drop_out=None, hidden_layers = None, epochs, m0):
+=======
+    def __init__(self, input_tar, ranking_matrix, output_size, learning_rate=0.01, drop_out, hidden_layers=None, epochs,
+                 m0):
+>>>>>>> cf85649ee97f894baa2aa02d8706e93f702dae46
         """
         @params:
             input_tar:a string denotes path of dataset
@@ -34,7 +39,7 @@ class DPCNN():
         self.dropout = drop_out
         self.hidden_layers = hidden_layers
         self.epochs = epochs
-        # self.batch_size = batchSz   
+        # self.batch_size = batchSz
 
         # training
         self.loss = self.loss_function()
@@ -48,7 +53,7 @@ class DPCNN():
         """
         tar = self.tar_set
         # self.features_matrix = []
-        features_matrix = [[0]*2048 for i in range(5063)]
+        features_matrix = [[0] * 2048 for i in range(5063)]
         i = 0
         for tar_info in tar.getmembers():
             f = tar.extractfile(tar_info)
@@ -73,7 +78,7 @@ class DPCNN():
         Loss = 0
         for index in range(len(self.features_matrix)):
             neighbor_indices = random.sample(range(300), 2)
-            indices.sort() 
+            indices.sort()
             rc = neighbor_indices[0]
             rf = neighbor_indices[1]
 
@@ -89,9 +94,9 @@ class DPCNN():
             If = self.features_matrix[index_f]
             If = np.array(If)
 
-            d_ac = np.linalg.norm(Ia-Ic)
-            d_af = np.linalg.norm(Ia-If)
-            l = d_ac - d_af + abs(rf-rc)/300 * self.m0
+            d_ac = np.linalg.norm(Ia - Ic)
+            d_af = np.linalg.norm(Ia - If)
+            l = d_ac - d_af + abs(rf - rc) / 300 * self.m0
             Loss += l
         return Loss
 
@@ -103,7 +108,7 @@ class DPCNN():
         return train
 
     def train(self, verbose=0):
-        
+
         pass
 
     def predict(self, input_image, verbose=0):

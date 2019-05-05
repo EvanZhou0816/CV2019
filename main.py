@@ -12,15 +12,12 @@ from tensorflow.python.keras.layers import Dense, Dropout, Flatten
 from tensorflow.python.keras.applications.resnet50 import preprocess_input 
 from DPCNN import DPCNN
 
-# from tf_cnnvis import *
-
-# from DPCNN import DPCNN
 
 if __name__ == "__main__":
     print(os.getcwd())
     os.chdir('F:/workspace_Python/CV2019')
     tar = tarfile.open("../oxbuild_images.tgz")
-    ResNet_model = keras.applications.ResNet50(weights='imagenet', include_top=False,pooling='avg')
+    ResNet_model = keras.applications.ResNet50(weights='imagenet', include_top=False, pooling='avg')
     # outputs1 = ResNet_model.get_layer('activation_48').output
     # outputs1 = Dense(4096, activation='softmax')(outputs1)
     # extracter = Model(inputs=ResNet_model.input,outputs=outputs1)  
@@ -45,9 +42,6 @@ if __name__ == "__main__":
 
 
 
-
-
-
     # i = 0
     # features_matrix=[0 for i in range(2048)]
     # features_matrix = []
@@ -69,5 +63,5 @@ if __name__ == "__main__":
     #     i+=1
     # print("image count: ", i)
     # np.save("features_matrix.npy", features_matrix)
-        
+
     pass
