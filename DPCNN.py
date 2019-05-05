@@ -14,14 +14,14 @@ from sklearn import metrics
 
 
 class DPCNN():
-    def __init__(self, input_tar, ranking_matrix, output_size, learning_rate=0.01, drop_out, hidden_layers = None, epochs, m0):
+    def __init__(self, input_tar, ranking_matrix, learning_rate = 0.01, drop_out=None, hidden_layers = None, epochs, m0):
         """
         @params:
             input_tar:a string denotes path of dataset
             ranking_matrix:a matrix in the shape of (5063,300)
         """
         # pre-trained Network(RestNet)
-        self.pretrained = keras.applications.ResNet50(weights='imagenet', include_top=False, pooling='avg')
+        self.pretrained = keras.applications.ResNet50(weights='imagenet', include_top = False, pooling='avg')
         self.tar_set = tarfile.open(input_tar)
         self.rankings = ranking_matrix
 
@@ -39,6 +39,7 @@ class DPCNN():
         # training
         self.loss = self.loss_function()
         self.features_matrix = self.forward_pass()
+        self.train = self.optimizer()
         pass
 
     def forward_pass(self):
@@ -94,7 +95,7 @@ class DPCNN():
             Loss += l
         return Loss
 
-    def construct(self):
+    def construct(self):    
         pass
 
     def optimizer(self):
@@ -105,7 +106,12 @@ class DPCNN():
         
         pass
 
-    def predict(self, inputs, verbose=0):
+    def predict(self, input_image, verbose=0):
+        res = process_image(input_image)
+        res = np.expand_dims(res, axis=0)
+        res = preprocess_input(res)
+        features = self.pretrained.predict(res)
+        return features
         pass
 
     def test(self, test_inputs, test_labels, verbose=0):

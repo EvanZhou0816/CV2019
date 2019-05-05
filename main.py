@@ -4,11 +4,17 @@ import tarfile
 import os
 from utils.raw_data import process_image
 from PIL import Image
+from tqdm import tqdm
 import tensorflow as tf
 import tensorflow.python.keras as keras
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.layers import Dense, Dropout, Flatten
 from tensorflow.python.keras.applications.resnet50 import preprocess_input 
+from DPCNN import DPCNN
+
+# from tf_cnnvis import *
+
+# from DPCNN import DPCNN
 
 if __name__ == "__main__":
     print(os.getcwd())
@@ -17,15 +23,31 @@ if __name__ == "__main__":
     ResNet_model = keras.applications.ResNet50(weights='imagenet', include_top=False,pooling='avg')
     # outputs1 = ResNet_model.get_layer('activation_48').output
     # outputs1 = Dense(4096, activation='softmax')(outputs1)
-    # extracter = Model(inputs=ResNet_model.input,outputs=outputs1) 
-
-
-    for layer in ResNet_model.layers:
-        print(layer.name, layer.trainable)
-    sess = tf.Session()
-
-
+    # extracter = Model(inputs=ResNet_model.input,outputs=outputs1)  
+    # for layer in ResNet_model.layers:
+    #     print(layer.name, layer.trainable)
     
+    saver = tf.train.Saver(max_to_keep=2)
+    sess = tf.Session()
+    
+    writer = tf.summary.FileWriter("logs/", sess.graph)
+    init = tf.global_variables_initializer()
+    sess.run(init)
+
+    ranking = np.load("ranking.npy")
+    print("ranking shape: ", np.shape(ranking))
+    
+    CNN_model = DPCNN(input_tar=tar, ranking_matrix=rankings, epochs=100, m0=10)
+    
+    pbar = tqdm(total=100)
+    for i in range(100):
+        sess.run(CNN_model.train)
+
+
+
+
+
+
     # i = 0
     # features_matrix=[0 for i in range(2048)]
     # features_matrix = []
