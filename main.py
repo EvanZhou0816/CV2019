@@ -16,52 +16,29 @@ from DPCNN import DPCNN
 if __name__ == "__main__":
     print(os.getcwd())
     os.chdir('F:/workspace_Python/CV2019')
+    tarpath = "../oxbuild_images.tgz"
     tar = tarfile.open("../oxbuild_images.tgz")
-    ResNet_model = keras.applications.ResNet50(weights='imagenet', include_top=False, pooling='avg')
+    # ResNet_model = keras.applications.ResNet50(weights='imagenet', include_top=False, pooling='avg')
     # outputs1 = ResNet_model.get_layer('activation_48').output
     # outputs1 = Dense(4096, activation='softmax')(outputs1)
     # extracter = Model(inputs=ResNet_model.input,outputs=outputs1)  
     # for layer in ResNet_model.layers:
     #     print(layer.name, layer.trainable)
     
-    saver = tf.train.Saver(max_to_keep=2)
+    rankings = np.load("npy/ranking5.npy")
+    CNN_model = DPCNN(tarpath, rankings, 10)
+    
     sess = tf.Session()
-    
-    writer = tf.summary.FileWriter("logs/", sess.graph)
+    saver = tf.train.Saver(max_to_keep=2)
     init = tf.global_variables_initializer()
+    writer = tf.summary.FileWriter("logs/", sess.graph)
     sess.run(init)
-
-    ranking = np.load("ranking.npy")
-    print("ranking shape: ", np.shape(ranking))
-    
-    CNN_model = DPCNN(input_tar=tar, ranking_matrix=rankings, epochs=100, m0=10)
-    
-    pbar = tqdm(total=100)
-    for i in range(100):
-        sess.run(CNN_model.train)
-
-
-
-    # i = 0
-    # features_matrix=[0 for i in range(2048)]
-    # features_matrix = []
-    # for tar_info in tar.getmembers():
-    #     f = tar.extractfile(tar_info)
-    #     f.read()
-    #     res = process_image(f)
-    #     res = np.expand_dims(res, axis=0)
-    #     res = preprocess_input(res)
-    #     features = ResNet_model.predict(res)
-    #     # features_reduce = features.squeeze()
-    #     print("img: ", i)
-    #     # print("feature shape: ",np.shape(features))
-    #     if i == 0:
-    #         features_matrix = features
-    #     else:
-    #         features_matrix = np.vstack((features_matrix, features))
-    #     print("features matrix: ", np.shape(features_matrix))
-    #     i+=1
-    # print("image count: ", i)
-    # np.save("features_matrix.npy", features_matrix)
+ 
+    for i in range(10):
+        print("\n========================= epoch being processed:{} =========================".format(i))
+        l, _ = sess.run(CNN_model.loss_function(), CNN_model.optimizer())
+        saver.save(sess, 'ckpt/dpcnnckpt', global_step=i+1)
+        print("Loss: ", l)
+    sess.close()
 
     pass

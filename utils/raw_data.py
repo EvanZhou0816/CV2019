@@ -8,6 +8,7 @@ def load_image(filename):
     pass
 def process_image(img):   
     # Image.frombytes()
+    img = Image.open(img)
     if img.width > 600 or img.height > 600:
         w_ratio = img.width/600
         h_ratio = img.height/600
